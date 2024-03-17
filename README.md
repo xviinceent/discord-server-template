@@ -1,5 +1,23 @@
 # Discord Server Template
-This is an easy-to-use Discord server template and a Discord bot for it. Just click [this link](https://discord.new/CTX2M8MF4mun)
+This is the Discord bot for [this Discord server template](https://discord.new/CTX2M8MF4mun).
+
+## Creating a bot and inviting it
+First, create a new application in the [Discord Developer Portal](https://discord.com/developers/applications).\
+<img src="https://zip.lynix.me/u/eJzia0.png">
+After that, go the "Bot" section on the left side and enable all Priviledged Gateway Intents.\
+<img src="https://zip.lynix.me/u/LBYJGi.png">
+Then, you have to get a bot token in order to log into your bot using code. You can get a bot token by pressing the "Reset Token" button.
+<img src="https://zip.lynix.me/u/mHpyxQ.png">
+Now, rename the `example.env` file to `.env` and paste the token.
+```
+TOKEN = 
+```
+Now, go to the "OAuth2" section and click the "bot" scope and then then click the "Administrator" permission.
+<img src="https://zip.lynix.me/u/Jk1ZVa.png">
+<img src="https://zip.lynix.me/u/OBjtfC.png">
+The last step is to copy the generated URL, paste it into your browser search bar and choose the server you want to add the bot to. Please note that you need the `MANAGE_SERVER` permission to add the bot.
+<img src="https://zip.lynix.me/u/krp3BO.png">
+<img src="https://zip.lynix.me/u/ZPhWZ1.png">
 
 ## Required installations
 > **_NOTE:_**  You can skip this section if you already have [Python](https://python.org) and [Git](https://git-scm.com) installed.
@@ -11,8 +29,8 @@ You will also need [Git](https://git-scm.com) to clone this repository. Head ove
 To make sure the bot is working, you need to rename the `example.config.json` file to `config.json` and replace the example values with yours. Explanation of the values:
 ```json
 {
-    "verification_channel_id": The channel ID of the channel for the verification message (NOT IN SPEECHMARKS),
-    "verified_role_id": The role ID of the role that is given to the user when verifying (NOT IN SPEECHMARKS)
+    "verification_channel_id": The channel ID of the channel for the verification message (NOT IN QUOTATION MARKS),
+    "verified_role_id": The role ID of the role that is given to the user when verifying (NOT IN QUOTATION MARKS)
 }
 ```
 
@@ -27,7 +45,7 @@ cd discord-server-template
 ```
 
 ## Installation of the dependencies
-We are using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)), the Python package manager, for installing the dependencies. For simplicity, this repository contains a `.txt` file that contains all required packages. To install all the packages, simply run:
+We are using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)), the Python package manager, for installing the dependencies. For simplicity, this repository contains a `requirements.txt` file that contains all required packages. To install all the packages, simply run:
 ```bash
 pip install -r requirements.txt
 ```
