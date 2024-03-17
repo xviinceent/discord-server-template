@@ -12,7 +12,10 @@ class BotSetupView(discord.ui.View):
     async def start_setup_button(self, interaction: discord.Interaction, button: discord.ui.Button):
         with open("config.json", 'r') as f:
             config = json.load(f)
-            setup_done = config["setup_done"]
+            try:
+                setup_done = config["setup_done"]
+            except:
+                setup_done = None
             verification_channel_id = config["verification_channel_id"]
             verified_role_id = config["verified_role_id"]
 
