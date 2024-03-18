@@ -32,6 +32,7 @@ class BotSetupView(discord.ui.View):
                 moderator_role_id = config["moderator_role_id"]
                 admin_role_id = config["admin_role_id"]
                 ticket_opening_channel_id = config["ticket_opening_channel_id"]
+                ticket_category_id = config["ticket_category_id"]
             except KeyError:
                 await interaction.response.send_message(f"❌ Setup failed. Please contact an admin.", ephemeral=True)
                 return
@@ -63,6 +64,11 @@ class BotSetupView(discord.ui.View):
         ticket_opening_channel = interaction.guild.get_channel(ticket_opening_channel_id)
         if not ticket_opening_channel:
             await interaction.response.send_message(f"❌ Setup failed. Please check if the channel with the ID `{ticket_opening_channel_id}` exists.", ephemeral=True)
+            return
+        
+        ticket_category = interaction.guild.get_channel(ticket_category_id)
+        if not ticket_category:
+            await interaction.response.send_message(f"❌ Setup failed. Please check if the category with the ID `{ticket_category_id}` exists.", ephemeral=True)
             return
 
         try:
@@ -99,4 +105,5 @@ async def setup(bot: commands.Bot):
         config = json.load(f)
         verified_role_id = config["verified_role_id"]
     bot.add_view(VerificationView(role_id=verified_role_id))
+    bot.add_view(OpenTicketView())
     await bot.add_cog(BotSetup(bot))

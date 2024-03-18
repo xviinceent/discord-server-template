@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import os
+import aiosqlite
 
 load_dotenv()
 
@@ -19,6 +20,20 @@ class MyBot(commands.Bot):
             if f.endswith(".py"):
                 await self.load_extension("cogs." + f[:-3])
         print("Successfully loaded all extensions!")
+
+        conn = await aiosqlite.connect("database.db")
+        cur = await conn.cursor()
+        await cur.execute(
+            """
+            CREATE TABLE IF NOT EXISTS tickets (
+                USERID INTEGER PRIMARY KEY,
+                CHANNELID INTEGER
+            )"""
+        )
+        await conn.commit()
+        await cur.close()
+        await conn.close()
+
         await self.tree.sync()
 
     async def on_ready(self):
