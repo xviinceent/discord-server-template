@@ -18,6 +18,8 @@ Now, go to the "OAuth2" section and click the "bot" scope and then then click th
 The last step is to copy the generated URL, paste it into your browser search bar and choose the server you want to add the bot to. Please note that you need the `MANAGE_SERVER` permission to add the bot.
 <img src="https://zip.lynix.me/u/krp3BO.png">
 <img src="https://zip.lynix.me/u/ZPhWZ1.png">
+Also, make the bot's role the highest in the server (as shown in the image below).
+<img src="https://zip.lynix.me/u/mbWEB6.png">
 
 ## Required installations
 > **_NOTE:_**  You can skip this section if you already have [Python](https://python.org) and [Git](https://git-scm.com) installed.
@@ -30,7 +32,9 @@ To make sure the bot is working, you need to rename the `example.config.json` fi
 ```json
 {
     "verification_channel_id": The channel ID of the channel for the verification message (NOT IN QUOTATION MARKS),
-    "verified_role_id": The role ID of the role that is given to the user when verifying (NOT IN QUOTATION MARKS)
+    "verified_role_id": The role ID of the role that is given to the user when verifying (NOT IN QUOTATION MARKS),
+    "moderator_role_id": The role ID of the moderator role (NOT IN QUOTATION MARKS),
+    "admin_role_id": The role ID of the admin role (NOT IN QUOTATION MARKS)
 }
 ```
 

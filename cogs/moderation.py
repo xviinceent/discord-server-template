@@ -9,6 +9,9 @@ class NewCog(commands.Cog):
  
     @app_commands.command(name="ban", description="Ban a user")
     async def ban(self, interaction: discord.Interaction, member: discord.Member, reason: str = None):
+        if not interaction.user.guild_permissions.ban_members:
+            await interaction.response.send_message("❌ You do not have permission to ban members.", ephemeral=True)
+            return
         try:
             await member.ban(reason=reason)
         except:	
@@ -18,6 +21,9 @@ class NewCog(commands.Cog):
 
     @app_commands.command(name="kick", description="Kick a user")
     async def kick(self, interaction: discord.Interaction, member: discord.Member, reason: str = None):
+        if not interaction.user.guild_permissions.kick_members:
+            await interaction.response.send_message("❌ You do not have permission to kick members.", ephemeral=True)
+            return
         try:
             await member.kick(reason=reason)
         except:
@@ -27,6 +33,9 @@ class NewCog(commands.Cog):
 
     @app_commands.command(name="unban", description="Unban a user")
     async def unban(self, interaction: discord.Interaction, user_id: int):
+        if not interaction.user.guild_permissions.ban_members:
+            await interaction.response.send_message("❌ You do not have permission to unban members.", ephemeral=True)
+            return
         try:
             await interaction.guild.unban(user=discord.Object(id=user_id))
         except:
@@ -36,6 +45,9 @@ class NewCog(commands.Cog):
 
     @app_commands.command(name="timeout-set", description="Timeout a member")
     async def timeout_set(self, interaction: discord.Interaction, member: discord.Member, days: app_commands.Range[int, 0, 28]=None, hours: app_commands.Range[int, 0, 672]=None, minutes: app_commands.Range[int, 0, 40320]=None, seconds: app_commands.Range[int, 0, 2419200]=None, reason: str=None):
+        if not interaction.user.guild_permissions.moderate_members:
+            await interaction.response.send_message("❌ You do not have permission to time out members.", ephemeral=True)
+            return
         if member.id == interaction.user.id:
             await interaction.response.send_message("❌ You cannot time out yourself!", ephemeral=True)
             return
@@ -66,6 +78,9 @@ class NewCog(commands.Cog):
 
     @app_commands.command(name="timeout-revoke", description="Revoke a member's timeout")
     async def timeout_revoke(self, interaction: discord.Interaction, member: discord.Member, reason: str=None):
+        if not interaction.user.guild_permissions.moderate_members:
+            await interaction.response.send_message("❌ You do not have permission to remove timeouts from members.", ephemeral=True)
+            return
         if member.id == interaction.user.id:
             await interaction.response.send_message("❌ You cannot revoke your own timeout!", ephemeral=True)
             return
