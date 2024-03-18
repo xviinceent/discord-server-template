@@ -31,12 +31,12 @@ You will also need [Git](https://git-scm.com) to clone this repository. Head ove
 To make sure the bot is working, you need to rename the `example.config.json` file to `config.json` and replace the example values with yours. Explanation of the values:
 ```json
 {
-    "verification_channel_id": The channel ID of the channel for the verification message (NOT IN QUOTATION MARKS),
-    "verified_role_id": The role ID of the role that is given to the user when verifying (NOT IN QUOTATION MARKS),
-    "moderator_role_id": The role ID of the moderator role (NOT IN QUOTATION MARKS),
-    "admin_role_id": The role ID of the admin role (NOT IN QUOTATION MARKS),
-    "ticket_opening_channel_id": The channel ID of the channel for opening a ticket,
-    "ticket_category_id": The category ID of the category for the ticket channels
+    "verification_channel_id": "The channel ID of the channel for the verification message (NOT IN QUOTATION MARKS)",
+    "verified_role_id": "The role ID of the role that is given to the user when verifying (NOT IN QUOTATION MARKS)",
+    "moderator_role_id": "The role ID of the moderator role (NOT IN QUOTATION MARKS)",
+    "admin_role_id": "The role ID of the admin role (NOT IN QUOTATION MARKS)",
+    "ticket_opening_channel_id": "The channel ID of the channel for opening a ticket (NOT IN QUOTATION MARKS)",
+    "ticket_category_id": "The category ID of the category for the ticket channels (NOT IN QUOTATION MARKS)"
 }
 ```
 
