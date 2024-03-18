@@ -25,7 +25,7 @@ Also, make the bot's role the highest in the server (as shown in the image below
 > **_NOTE:_**  You can skip this section if you already have [Python](https://python.org) and [Git](https://git-scm.com) installed.
 
 In order for the bot to work, you need the programming language [Python](https://python.org). This bot is written using [Python 3.10.8](https://www.python.org/downloads/release/python-3108). To install it, just scroll down and look for the installer for your [operating system](https://en.wikipedia.org/wiki/Operating_system). After that, just follow the setup process.\
-You will also need [Git](https://git-scm.com) to clone this repository. Head over to the [downloads section](https://git-scm.com/downloads), choose the installer for your operating system and follow the setup process.\
+You will also need [Git](https://git-scm.com) to clone this repository. Head over to the [downloads section](https://git-scm.com/downloads), choose the installer for your operating system and follow the setup process.
 
 ## Setup
 To make sure the bot is working, you need to rename the `example.config.json` file to `config.json` and replace the example values with yours. Explanation of the values:
