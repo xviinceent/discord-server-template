@@ -1,7 +1,8 @@
-{
-    "verification_channel_id": 0,
+{   
+    "verification_channel_id": 0, 
     "verified_role_id": 0,
     "moderator_role_id": 0,
     "admin_role_id": 0,
-    "ticket_opening_channel_id": 0
+    "ticket_opening_channel_id": 0,
+    "ticket_category_id": 0
 }
