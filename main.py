@@ -30,6 +30,13 @@ class MyBot(commands.Bot):
                 CHANNELID INTEGER
             )"""
         )
+        await cur.execute(
+            """
+            CREATE TABLE IF NOT EXISTS tempvoice (
+                OWNERID INTEGER PRIMARY KEY,
+                CHANNELID INTEGER
+            )"""
+        )
         await conn.commit()
         await cur.close()
         await conn.close()
