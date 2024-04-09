@@ -97,11 +97,49 @@ class Tempvoice(commands.Cog):
 
     @app_commands.command(name="change-name", description="Change the name of your tempvoice channel")
     async def change_name(self, interaction: discord.Interaction, name: str):
-        await interaction.response.send_message("this command will change your voice channels name, once implemented")
+        await interaction.response.defer()
+        if len(name) > 100 or len(name) < 1:
+            return await interaction.followup.send("Name must be between `1` and `100` characters long.")
+        conn = await aiosqlite.connect("database.db")
+        cur = await conn.cursor()
+        await cur.execute("SELECT OWNERID FROM tempvoice WHERE CHANNELID = ?", (interaction.channel.id,))
+        result = await cur.fetchone()
+        if result is None:
+            await cur.close()
+            await conn.close()
+            return await interaction.followup.send("You do not own this channel.")
+        else:
+            if result[0] != interaction.user.id:
+                await cur.close()
+                await conn.close()
+                return await interaction.followup.send("You do not own this channel.")
+        await interaction.channel.edit(name=name)
+        await cur.close()
+        await conn.close()
+        return await interaction.followup.send(f"Name changed to `{name}`.")
     
-    @app_commands.command(name="max-users", description="Change max users in your tempvoice category")
-    async def max_users(self, interaction: discord.Interaction, max_users: int):
-        await interaction.response.send_message("this command will change the max users in your tempvoice category, once implemented")
+    @app_commands.command(name="user-limit", description="Change max users in your tempvoice category")
+    async def user_limit(self, interaction: discord.Interaction, max_users: int):
+        await interaction.response.defer()
+        if max_users > 99 or max_users < 0:
+            return await interaction.followup.send("User limit cannot be set to more than `99` or less than `0`.")
+        conn = await aiosqlite.connect("database.db")
+        cur = await conn.cursor()
+        await cur.execute("SELECT OWNERID FROM tempvoice WHERE CHANNELID = ?", (interaction.channel.id,))
+        result = await cur.fetchone()
+        if result is None:
+            await cur.close()
+            await conn.close()
+            return await interaction.followup.send("You do not own this channel.")
+        else:
+            if result[0] != interaction.user.id:
+                await cur.close()
+                await conn.close()
+                return await interaction.followup.send("You do not own this channel.")
+        await interaction.channel.edit(user_limit=max_users)
+        await cur.close()
+        await conn.close()
+        return await interaction.followup.send(f"User limit changed to `{max_users}`")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Tempvoice(bot))
