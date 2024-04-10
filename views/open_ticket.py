@@ -22,6 +22,7 @@ class OpenTicketView(discord.ui.View):
             config = json.load(f)
             try:
                 ticket_category_id = config["ticket_category_id"]
+                ticket_logging_channel_id = config["ticket_logging_channel_id"]
             except KeyError:
                 await cur.close()
                 await conn.close()
@@ -34,8 +35,16 @@ class OpenTicketView(discord.ui.View):
             await conn.close()
             await interaction.followup.send(f"❌ The ticket category does not exist. Please contact an admin.", ephemeral=True)
             return
+        
+        ticket_logging_channel = interaction.guild.get_channel(ticket_logging_channel_id)
+        if not ticket_logging_channel:
+            await cur.close()
+            await conn.close()
+            await interaction.followup.send(f"❌ The ticket logging channel does not exist. Please contact an admin.", ephemeral=True)
+            return
 
         ticket_channel = await ticket_category.create_text_channel(name=f"ticket-{interaction.user.id}", overwrites={interaction.guild.default_role: discord.PermissionOverwrite(view_channel=False), interaction.user: discord.PermissionOverwrite(view_channel=True)})
+        await ticket_logging_channel.send(f"📩 A new ticket has been created by {interaction.user.mention}. Channel: {ticket_channel.mention}")
         await cur.execute("INSERT INTO tickets (USERID, CHANNELID) VALUES (?, ?)", (interaction.user.id, ticket_channel.id,))
         await conn.commit()
         await cur.close()

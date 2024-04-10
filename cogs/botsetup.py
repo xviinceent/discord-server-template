@@ -33,6 +33,9 @@ class BotSetupView(discord.ui.View):
                 admin_role_id = config["admin_role_id"]
                 ticket_opening_channel_id = config["ticket_opening_channel_id"]
                 ticket_category_id = config["ticket_category_id"]
+                tempvoice_creation_channel_id = config["tempvoice_creation_channel_id"]
+                tempvoice_creation_category_id = config["tempvoice_creation_category_id"]
+                ticket_logging_channel_id = config["ticket_logging_channel_id"]
             except KeyError:
                 await interaction.response.send_message(f"❌ Setup failed. Please contact an admin.", ephemeral=True)
                 return
@@ -70,6 +73,22 @@ class BotSetupView(discord.ui.View):
         if not ticket_category:
             await interaction.response.send_message(f"❌ Setup failed. Please check if the category with the ID `{ticket_category_id}` exists.", ephemeral=True)
             return
+        
+        tempvoice_creation_channel = interaction.guild.get_channel(tempvoice_creation_channel_id)
+        if not tempvoice_creation_channel:
+            await interaction.response.send_message(f"❌ Setup failed. Please check if the channel with the ID `{tempvoice_creation_channel_id}` exists.", ephemeral=True)
+            return
+        
+        tempvoice_creation_category = interaction.guild.get_channel(tempvoice_creation_category_id)
+        if not tempvoice_creation_category:
+            await interaction.response.send_message(f"❌ Setup failed. Please check if the category with the ID `{tempvoice_creation_category_id}` exists.", ephemeral=True)
+            return
+        
+        ticket_logging_channel = interaction.guild.get_channel(ticket_logging_channel_id)
+        if not ticket_logging_channel:
+            await interaction.response.send_message(f"❌ Setup failed. Please check if the channel with the ID `{ticket_logging_channel_id}` exists.", ephemeral=True)
+            return
+
 
         try:
             await verification_channel.send("Click the button below to verify.", view=VerificationView(role_id=verified_role_id))

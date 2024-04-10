@@ -3,23 +3,23 @@ This is the Discord bot for [this Discord server template](https://discord.new/C
 
 ## Creating a bot and inviting it
 First, create a new application in the [Discord Developer Portal](https://discord.com/developers/applications).\
-<img src="https://zip.lynix.me/u/eJzia0.png">
+<img src="images/new_application.png">
 After that, go the "Bot" section on the left side and enable all Priviledged Gateway Intents.\
-<img src="https://zip.lynix.me/u/LBYJGi.png">
+<img src="images/enable_intents.png">
 Then, you have to get a bot token in order to log into your bot using code. You can get a bot token by pressing the "Reset Token" button.
-<img src="https://zip.lynix.me/u/mHpyxQ.png">
+<img src="images/reset_token.png">
 Now, rename the `example.env` file to `.env` and paste the token.
 ```
 TOKEN = 
 ```
 Now, go to the "OAuth2" section and click the "bot" scope and then then click the "Administrator" permission.
-<img src="https://zip.lynix.me/u/Jk1ZVa.png">
-<img src="https://zip.lynix.me/u/OBjtfC.png">
+<img src="images/enable_bot_scope.png">
+<img src="images/give_administrator_permission.png">
 The last step is to copy the generated URL, paste it into your browser search bar and choose the server you want to add the bot to. Please note that you need the `MANAGE_SERVER` permission to add the bot.
-<img src="https://zip.lynix.me/u/krp3BO.png">
-<img src="https://zip.lynix.me/u/ZPhWZ1.png">
+<img src="images/copy_invite_link.png">
+<img src="images/choose_server.png">
 Also, make the bot's role the highest in the server (as shown in the image below).
-<img src="https://zip.lynix.me/u/mbWEB6.png">
+<img src="images/highest_role.png">
 
 ## Required installations
 > **_NOTE:_**  You can skip this section if you already have [Python](https://python.org) and [Git](https://git-scm.com) installed.
@@ -36,7 +36,10 @@ To make sure the bot is working, you need to rename the `example.config.json` fi
     "moderator_role_id": "The role ID of the moderator role (NOT IN QUOTATION MARKS)",
     "admin_role_id": "The role ID of the admin role (NOT IN QUOTATION MARKS)",
     "ticket_opening_channel_id": "The channel ID of the channel for opening a ticket (NOT IN QUOTATION MARKS)",
-    "ticket_category_id": "The category ID of the category for the ticket channels (NOT IN QUOTATION MARKS)"
+    "ticket_category_id": "The category ID of the category for the ticket channels (NOT IN QUOTATION MARKS)",
+    "tempvoice_creation_channel_id": "The channel ID of the channel for the temporary voice channel creation (NOT IN QUOTATION MARKS)",
+    "tempvoice_creation_category_id": "The category ID of the category for the created temporary voice channels (NOT IN QUOTATION MARKS)",
+    "ticket_logging_channel_id": "The channel ID of the channel for ticket logging"
 }
 ```
 

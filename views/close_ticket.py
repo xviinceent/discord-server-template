@@ -23,14 +23,17 @@ class CloseTicketView(discord.ui.View):
             try:
                 mod_role_id = config["moderator_role_id"]
                 admin_role_id = config["admin_role_id"]
+                ticket_logging_channel_id = config["ticket_logging_channel_id"]
             except KeyError:
                 await cur.close()
                 await conn.close()
                 await interaction.followup.send("❌ Please check if all required config values are set. Please contact an admin.", ephemeral=True)
                 return
         
+        ticket_user = interaction.guild.get_member(result[0])
         mod_role = interaction.guild.get_role(mod_role_id)
         admin_role = interaction.guild.get_role(admin_role_id)
+        ticket_logging_channel = interaction.guild.get_channel(ticket_logging_channel_id)
         checks = [mod_role in interaction.user.roles, admin_role in interaction.user.roles, interaction.user == interaction.guild.owner]
 
         if any(checks) and result[0] != interaction.user.id:
@@ -43,6 +46,7 @@ class CloseTicketView(discord.ui.View):
         await conn.commit()
         await cur.close()
         await conn.close()
+        await ticket_logging_channel.send(f"{ticket_user.mention}'s ticket has been closed by {interaction.user.mention}")
         await interaction.followup.send("✅ Ticket closed successfully. Channel will be deleted in 3 seconds.", ephemeral=True)
         await asyncio.sleep(3)
         await interaction.channel.delete()
