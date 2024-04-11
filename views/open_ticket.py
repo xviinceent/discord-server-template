@@ -1,6 +1,7 @@
 import discord
 import aiosqlite
 import json
+from components.embeds import LoggingEmbed
 
 class OpenTicketView(discord.ui.View):
     def __init__(self):
@@ -44,7 +45,8 @@ class OpenTicketView(discord.ui.View):
             return
 
         ticket_channel = await ticket_category.create_text_channel(name=f"ticket-{interaction.user.id}", overwrites={interaction.guild.default_role: discord.PermissionOverwrite(view_channel=False), interaction.user: discord.PermissionOverwrite(view_channel=True)})
-        await ticket_logging_channel.send(f"📩 A new ticket has been created by {interaction.user.mention}. Channel: {ticket_channel.mention}")
+        embed = LoggingEmbed(responsible_user=interaction.user, action="Ticket opened", description=f"Ticket created in {ticket_channel.mention}.")
+        await ticket_logging_channel.send(embed=embed)
         await cur.execute("INSERT INTO tickets (USERID, CHANNELID) VALUES (?, ?)", (interaction.user.id, ticket_channel.id,))
         await conn.commit()
         await cur.close()

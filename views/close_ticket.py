@@ -2,6 +2,7 @@ import discord
 import aiosqlite
 import json
 import asyncio
+from components.embeds import LoggingEmbed
 
 class CloseTicketView(discord.ui.View):
     
@@ -46,7 +47,8 @@ class CloseTicketView(discord.ui.View):
         await conn.commit()
         await cur.close()
         await conn.close()
-        await ticket_logging_channel.send(f"{ticket_user.mention}'s ticket has been closed by {interaction.user.mention}")
+        embed = LoggingEmbed(responsible_user=interaction.user, action="Ticket closed", description=f"Ticket by user {ticket_user.mention} has been closed.")
+        await ticket_logging_channel.send(embed=embed)
         await interaction.followup.send("✅ Ticket closed successfully. Channel will be deleted in 3 seconds.", ephemeral=True)
         await asyncio.sleep(3)
         await interaction.channel.delete()
