@@ -15,8 +15,10 @@ class NewCog(commands.Cog):
         with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
-        if not interaction.user.guild_permissions.ban_members:
-            await interaction.followup.send("❌ You do not have permission to ban members.", ephemeral=True)
+            moderator_role_id = config["moderator_role_id"]
+            admin_role_id = config["admin_role_id"]
+        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+            await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         try:
             await member.ban(reason=reason)
@@ -34,8 +36,10 @@ class NewCog(commands.Cog):
         with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
-        if not interaction.user.guild_permissions.kick_members:
-            await interaction.followup.send("❌ You do not have permission to kick members.", ephemeral=True)
+            moderator_role_id = config["moderator_role_id"]
+            admin_role_id = config["admin_role_id"]
+        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+            await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         try:
             await member.kick(reason=reason)
@@ -53,8 +57,10 @@ class NewCog(commands.Cog):
         with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
-        if not interaction.user.guild_permissions.ban_members:
-            await interaction.followup.send("❌ You do not have permission to unban members.", ephemeral=True)
+            moderator_role_id = config["moderator_role_id"]
+            admin_role_id = config["admin_role_id"]
+        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+            await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         try:
             await interaction.guild.unban(user=discord.Object(id=user_id))
@@ -72,8 +78,10 @@ class NewCog(commands.Cog):
         with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
-        if not interaction.user.guild_permissions.moderate_members:
-            await interaction.followup.send("❌ You do not have permission to time out members.", ephemeral=True)
+            moderator_role_id = config["moderator_role_id"]
+            admin_role_id = config["admin_role_id"]
+        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+            await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         if member.id == interaction.user.id:
             await interaction.followup.send("❌ You cannot time out yourself!", ephemeral=True)
@@ -112,8 +120,10 @@ class NewCog(commands.Cog):
         with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
-        if not interaction.user.guild_permissions.moderate_members:
-            await interaction.followup.send("❌ You do not have permission to remove timeouts from members.", ephemeral=True)
+            moderator_role_id = config["moderator_role_id"]
+            admin_role_id = config["admin_role_id"]
+        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+            await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         if member.id == interaction.user.id:
             await interaction.followup.send("❌ You cannot revoke your own timeout!", ephemeral=True)
