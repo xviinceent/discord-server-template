@@ -140,6 +140,55 @@ class NewCog(commands.Cog):
         logging_channel = interaction.guild.get_channel(moderation_logging_channel_id)
         await logging_channel.send(embed=embed)
         await interaction.followup.send(f"✅ {member.mention}'s timeout has been revoked by {interaction.user.mention}", ephemeral=True)
+
+    @commands.Cog.listener()
+    async def on_member_ban(self, guild: discord.Guild, user: discord.Member):
+        with open("config.json", "w") as f:
+            config = json.load(f)
+            moderation_logging_channel_id = config["moderation_logging_channel_id"]
+        channel = guild.get_channel(moderation_logging_channel_id)
+        if not channel:
+            return
+        async for entry in guild.audit_logs(action=discord.AuditLogAction.ban, limit = 10):
+            if entry.target == user:
+                embed = LoggingEmbed(responsible_user=entry.user, action="User banned", description=f"User {user.mention} has been banned. Reason: {entry.reason}")
+                await channel.send(embed=embed)
+                break
+        return
+    
+    @commands.Cog.listener()
+    async def on_member_unban(self, guild: discord.Guild, user: discord.User):
+        with open("config.json", "w") as f:
+            config = json.load(f)
+            moderation_logging_channel_id = config["moderation_logging_channel_id"]
+        channel = guild.get_channel(moderation_logging_channel_id)
+        if not channel:
+            return
+        async for entry in guild.audit_logs(action=discord.AuditLogAction.unban, limit = 10):
+            if entry.target == user:
+                embed = LoggingEmbed(responsible_user=entry.user, action="User unbanned", description=f"User {user.mention} has been unbanned.")
+                await channel.send(embed=embed)
+                break
+        return
+    
+    @commands.Cog.listener()
+    async def on_member_remove(self, member: discord.Member):
+        with open("config.json", "w") as f:
+            config = json.load(f)
+            moderation_logging_channel_id = config["moderation_logging_channel_id"]
+        channel = member.guild.get_channel(moderation_logging_channel_id)
+        if not channel:
+            return
+        async for entry in member.guild.audit_logs(action=discord.AuditLogAction.kick, limit = 10):
+            if entry.target == member:
+                now = datetime.datetime.utcnow()
+                entry_time = entry.created_at
+                if not all([now.year == entry_time.year, now.month == entry_time.month, now.day == entry_time.day, now.hour == entry_time.hour, now.minute == entry_time.minute, now.second - entry_time.second <= 5]):
+                    continue
+                embed = LoggingEmbed(responsible_user=entry.user, action="User kicked", description=f"User {member.mention} has been kicked. Reason: {entry.reason}")
+                await channel.send(embed=embed)
+                break
+        return
  
 async def setup(bot: commands.Bot):
     await bot.add_cog(NewCog(bot))
