@@ -109,7 +109,7 @@ class NewCog(commands.Cog):
         except:
             await interaction.followup.send(f"❌ I am not allowed to set a timeout for {member.mention}!", ephemeral=True)
             return
-        embed = LoggingEmbed(responsible_user=interaction.user, action="User timed out", description=f"User {member.mention} has been given a timeout. Reason: {reason}")
+        embed = LoggingEmbed(responsible_user=interaction.user, action="User timed out", description=f"User {member.mention} has been given a timeout until {discord.utils.format_dt(member.timed_out_until, 'f')}. Reason: {reason}")
         logging_channel = interaction.guild.get_channel(moderation_logging_channel_id)
         await logging_channel.send(embed=embed)
         await interaction.followup.send(f"✅ {member.mention} has been timed out for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds by {interaction.user.mention}", ephemeral=True)
@@ -143,7 +143,7 @@ class NewCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild: discord.Guild, user: discord.Member):
-        with open("config.json", "w") as f:
+        with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
         channel = guild.get_channel(moderation_logging_channel_id)
@@ -158,7 +158,7 @@ class NewCog(commands.Cog):
     
     @commands.Cog.listener()
     async def on_member_unban(self, guild: discord.Guild, user: discord.User):
-        with open("config.json", "w") as f:
+        with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
         channel = guild.get_channel(moderation_logging_channel_id)
@@ -173,7 +173,7 @@ class NewCog(commands.Cog):
     
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
-        with open("config.json", "w") as f:
+        with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
         channel = member.guild.get_channel(moderation_logging_channel_id)
@@ -189,6 +189,32 @@ class NewCog(commands.Cog):
                 await channel.send(embed=embed)
                 break
         return
+    
+    @commands.Cog.listener()
+    async def on_member_update(self, before: discord.Member, after: discord.Member):
+        with open("config.json", "r") as f:
+            config = json.load(f)
+            moderation_logging_channel_id = config["moderation_logging_channel_id"]
+        channel = after.guild.get_channel(moderation_logging_channel_id)
+        if not channel:
+            return
+        if before.timed_out_until and not after.timed_out_until:
+            async for entry in after.guild.audit_logs(action=discord.AuditLogAction.member_update, limit = 10):
+                if entry.target == after:
+                    if not entry.target.timed_out_until:
+                        embed = LoggingEmbed(responsible_user=entry.user, action="User timeout revoked", description=f"{entry.target.mention}'s timeout has been revoked. Reason: {entry.reason}")
+                        await channel.send(embed=embed)
+                        break
+            return
+        if not before.timed_out_until and after.timed_out_until:
+            async for entry in after.guild.audit_logs(action=discord.AuditLogAction.member_update, limit = 10):
+                if entry.target == after:
+                    if entry.target.timed_out_until:
+                        embed = LoggingEmbed(responsible_user=entry.user, action="User timed out", description=f"User {entry.target.mention} has been given a timeout until {discord.utils.format_dt(entry.target.timed_out_until, 'f')}. Reason: {entry.reason}")
+                        await channel.send(embed=embed)
+                        break
+            return
+        
  
 async def setup(bot: commands.Bot):
     await bot.add_cog(NewCog(bot))
