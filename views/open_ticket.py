@@ -45,6 +45,7 @@ class OpenTicketView(discord.ui.View):
             return
 
         ticket_channel = await ticket_category.create_text_channel(name=f"ticket-{interaction.user.id}", overwrites={interaction.guild.default_role: discord.PermissionOverwrite(view_channel=False), interaction.user: discord.PermissionOverwrite(view_channel=True)})
+        await ticket_channel.send("This is the start of your ticket, please describe your issue. The ticket can be closed by using the </close:1219372148263620701> command.")
         embed = LoggingEmbed(responsible_user=interaction.user, action="Ticket opened", description=f"Ticket created in {ticket_channel.mention}.")
         await ticket_logging_channel.send(embed=embed)
         await cur.execute("INSERT INTO tickets (USERID, CHANNELID) VALUES (?, ?)", (interaction.user.id, ticket_channel.id,))

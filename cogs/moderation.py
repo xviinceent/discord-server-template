@@ -106,13 +106,16 @@ class NewCog(commands.Cog):
             return
         try:
             await member.timeout(duration, reason=reason)
-        except:
+        except discord.Forbidden:
             await interaction.followup.send(f"❌ I am not allowed to set a timeout for {member.mention}!", ephemeral=True)
             return
-        embed = LoggingEmbed(responsible_user=interaction.user, action="User timed out", description=f"User {member.mention} has been given a timeout until {discord.utils.format_dt(member.timed_out_until, 'f')}. Reason: {reason}")
+        user_fetched = await interaction.guild.fetch_member(member.id)
+        timestamp = discord.utils.format_dt(user_fetched.timed_out_until, 'f')
+        embed = LoggingEmbed(responsible_user=interaction.user, action="User timed out", description=f"User {member.mention} has been given a timeout until {timestamp}. Reason: {reason}")
         logging_channel = interaction.guild.get_channel(moderation_logging_channel_id)
         await logging_channel.send(embed=embed)
         await interaction.followup.send(f"✅ {member.mention} has been timed out for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds by {interaction.user.mention}", ephemeral=True)
+        return
 
     @app_commands.command(name="timeout-revoke", description="Revoke a member's timeout")
     async def timeout_revoke(self, interaction: discord.Interaction, member: discord.Member, reason: str=None):
@@ -133,7 +136,7 @@ class NewCog(commands.Cog):
             return
         try:
             await member.timeout(None, reason=reason)
-        except:
+        except discord.Forbidden:
             await interaction.followup.send(f"❌ I am not allowed to revoke a timeout for {member.mention}!", ephemeral=True)
             return
         embed = LoggingEmbed(responsible_user=interaction.user, action="User timeout revoked", description=f"{member.mention}'s timeout has been revoked. Reason: {reason}")
@@ -150,10 +153,11 @@ class NewCog(commands.Cog):
         if not channel:
             return
         async for entry in guild.audit_logs(action=discord.AuditLogAction.ban, limit = 10):
-            if entry.target == user:
+            if entry.target == user and entry.user != self.bot.user:
                 embed = LoggingEmbed(responsible_user=entry.user, action="User banned", description=f"User {user.mention} has been banned. Reason: {entry.reason}")
                 await channel.send(embed=embed)
                 break
+            return
         return
     
     @commands.Cog.listener()
@@ -165,10 +169,11 @@ class NewCog(commands.Cog):
         if not channel:
             return
         async for entry in guild.audit_logs(action=discord.AuditLogAction.unban, limit = 10):
-            if entry.target == user:
+            if entry.target == user and entry.user != self.bot.user:
                 embed = LoggingEmbed(responsible_user=entry.user, action="User unbanned", description=f"User {user.mention} has been unbanned.")
                 await channel.send(embed=embed)
                 break
+            return
         return
     
     @commands.Cog.listener()
@@ -180,7 +185,7 @@ class NewCog(commands.Cog):
         if not channel:
             return
         async for entry in member.guild.audit_logs(action=discord.AuditLogAction.kick, limit = 10):
-            if entry.target == member:
+            if entry.target == member and entry.user != self.bot.user:
                 now = datetime.datetime.utcnow()
                 entry_time = entry.created_at
                 if not all([now.year == entry_time.year, now.month == entry_time.month, now.day == entry_time.day, now.hour == entry_time.hour, now.minute == entry_time.minute, now.second - entry_time.second <= 5]):
@@ -188,6 +193,7 @@ class NewCog(commands.Cog):
                 embed = LoggingEmbed(responsible_user=entry.user, action="User kicked", description=f"User {member.mention} has been kicked. Reason: {entry.reason}")
                 await channel.send(embed=embed)
                 break
+            return
         return
     
     @commands.Cog.listener()
@@ -200,19 +206,23 @@ class NewCog(commands.Cog):
             return
         if before.timed_out_until and not after.timed_out_until:
             async for entry in after.guild.audit_logs(action=discord.AuditLogAction.member_update, limit = 10):
-                if entry.target == after:
+                if entry.target == after and entry.user != self.bot.user:
                     if not entry.target.timed_out_until:
                         embed = LoggingEmbed(responsible_user=entry.user, action="User timeout revoked", description=f"{entry.target.mention}'s timeout has been revoked. Reason: {entry.reason}")
                         await channel.send(embed=embed)
                         break
+                    return
+                return
             return
         if not before.timed_out_until and after.timed_out_until:
             async for entry in after.guild.audit_logs(action=discord.AuditLogAction.member_update, limit = 10):
-                if entry.target == after:
+                if entry.target == after and entry.user != self.bot.user:
                     if entry.target.timed_out_until:
                         embed = LoggingEmbed(responsible_user=entry.user, action="User timed out", description=f"User {entry.target.mention} has been given a timeout until {discord.utils.format_dt(entry.target.timed_out_until, 'f')}. Reason: {entry.reason}")
                         await channel.send(embed=embed)
                         break
+                    return
+                return
             return
         
  
