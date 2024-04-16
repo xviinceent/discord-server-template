@@ -17,7 +17,7 @@ class NewCog(commands.Cog):
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
             moderator_role_id = config["moderator_role_id"]
             admin_role_id = config["admin_role_id"]
-        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+        if not moderator_role_id in [role.id for role in interaction.user.roles] and not admin_role_id in [role.id for role in interaction.user.roles]:
             await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         try:
@@ -38,7 +38,7 @@ class NewCog(commands.Cog):
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
             moderator_role_id = config["moderator_role_id"]
             admin_role_id = config["admin_role_id"]
-        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+        if not moderator_role_id in [role.id for role in interaction.user.roles] and not admin_role_id in [role.id for role in interaction.user.roles]:
             await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         try:
@@ -59,7 +59,7 @@ class NewCog(commands.Cog):
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
             moderator_role_id = config["moderator_role_id"]
             admin_role_id = config["admin_role_id"]
-        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+        if not moderator_role_id in [role.id for role in interaction.user.roles] and not admin_role_id in [role.id for role in interaction.user.roles]:
             await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         try:
@@ -80,7 +80,7 @@ class NewCog(commands.Cog):
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
             moderator_role_id = config["moderator_role_id"]
             admin_role_id = config["admin_role_id"]
-        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+        if not moderator_role_id in [role.id for role in interaction.user.roles] and not admin_role_id in [role.id for role in interaction.user.roles]:
             await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         if member.id == interaction.user.id:
@@ -125,7 +125,7 @@ class NewCog(commands.Cog):
             moderation_logging_channel_id = config["moderation_logging_channel_id"]
             moderator_role_id = config["moderator_role_id"]
             admin_role_id = config["admin_role_id"]
-        if not moderator_role_id in [role.id for role in interaction.user.roles] or not admin_role_id in [role.id for role in interaction.user.roles]:
+        if not moderator_role_id in [role.id for role in interaction.user.roles] and not admin_role_id in [role.id for role in interaction.user.roles]:
             await interaction.followup.send("❌ You are not an admin or moderator.", ephemeral=True)
             return
         if member.id == interaction.user.id:
