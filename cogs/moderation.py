@@ -52,8 +52,12 @@ class NewCog(commands.Cog):
         await interaction.followup.send(f"✅ Kicked {member.mention}. Reason: **{reason}**", ephemeral=True)
 
     @app_commands.command(name="unban", description="Unban a user")
-    async def unban(self, interaction: discord.Interaction, user_id: int):
+    async def unban(self, interaction: discord.Interaction, user_id: str):
         await interaction.response.defer(thinking=True, ephemeral=True)
+        try:
+            user_id = int(user_id)
+        except:
+            await interaction.followup.send("❌ Invalid number.", ephemeral=True)
         with open("config.json", "r") as f:
             config = json.load(f)
             moderation_logging_channel_id = config["moderation_logging_channel_id"]

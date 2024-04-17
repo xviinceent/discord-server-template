@@ -37,7 +37,7 @@ class CloseTicketView(discord.ui.View):
         ticket_logging_channel = interaction.guild.get_channel(ticket_logging_channel_id)
         checks = [mod_role in interaction.user.roles, admin_role in interaction.user.roles, interaction.user == interaction.guild.owner]
 
-        if any(checks) and result[0] != interaction.user.id:
+        if not any(checks) and result[0] != interaction.user.id:
             await cur.close()
             await conn.close()
             await interaction.followup.send("❌ You do not have permission to close this ticket.", ephemeral=True)
