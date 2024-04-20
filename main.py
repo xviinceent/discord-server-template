@@ -52,4 +52,8 @@ bot = MyBot()
 async def hello(ctx: commands.Context):
     await ctx.reply("Hello, world!")
 
+@bot.command()
+async def ping(ctx: commands.Context):
+    await ctx.reply(f"🎾 Pong! API Latency: {round(bot.latency * 1000)}ms")
+
 bot.run(os.getenv("TOKEN"))
