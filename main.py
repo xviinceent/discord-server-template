@@ -48,4 +48,8 @@ class MyBot(commands.Bot):
 
 bot = MyBot()
 
+@bot.command()
+async def hello(ctx: commands.Context):
+    await ctx.reply("Hello, world!")
+
 bot.run(os.getenv("TOKEN"))
