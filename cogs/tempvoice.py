@@ -98,6 +98,8 @@ class Tempvoice(commands.Cog):
     @app_commands.command(name="change-name", description="Change the name of your tempvoice channel")
     async def change_name(self, interaction: discord.Interaction, name: str):
         await interaction.response.defer()
+        if interaction.channel.type != discord.ChannelType.voice:
+            return await interaction.followup.send("This channel is not a voice channel.")
         if len(name) > 100 or len(name) < 1:
             return await interaction.followup.send("Name must be between `1` and `100` characters long.")
         conn = await aiosqlite.connect("database.db")
@@ -121,6 +123,8 @@ class Tempvoice(commands.Cog):
     @app_commands.command(name="user-limit", description="Change max users in your tempvoice category")
     async def user_limit(self, interaction: discord.Interaction, max_users: int):
         await interaction.response.defer()
+        if interaction.channel.type != discord.ChannelType.voice:
+            return await interaction.followup.send("This channel is not a voice channel.")
         if max_users > 99 or max_users < 0:
             return await interaction.followup.send("User limit cannot be set to more than `99` or less than `0`.")
         conn = await aiosqlite.connect("database.db")
