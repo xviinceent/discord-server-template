@@ -1,5 +1,6 @@
 # Discord Server Template
-This is the Discord bot for [this Discord server template](https://discord.new/CTX2M8MF4mun).
+This is the Discord bot for [this Discord server template](https://discord.new/CTX2M8MF4mun).\
+Demo @ https://discord.gg/dSRZrZhrPf
 
 ## Creating a bot and inviting it
 First, create a new application in the [Discord Developer Portal](https://discord.com/developers/applications).\
