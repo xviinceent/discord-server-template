@@ -7,5 +7,6 @@
     "ticket_category_id": 0,
     "tempvoice_creation_channel_id": 0,
     "tempvoice_creation_category_id": 0,
-    "ticket_logging_channel_id": 0
+    "ticket_logging_channel_id": 0,
+    "moderation_logging_channel_id": 0
 }
