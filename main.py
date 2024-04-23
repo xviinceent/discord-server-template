@@ -19,7 +19,6 @@ class MyBot(commands.Bot):
         for f in os.listdir("./cogs"):
             if f.endswith(".py"):
                 await self.load_extension("cogs." + f[:-3])
-        await self.load_extension("jishaku")
         print("Successfully loaded all extensions!")
 
         conn = await aiosqlite.connect("database.db")
