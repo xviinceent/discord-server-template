@@ -3,7 +3,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import os
 import aiosqlite
-from datetime import datetime
+import datetime
 import time
 
 start_time = time.time()
