@@ -3,7 +3,10 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import os
 import aiosqlite
+from datetime import datetime
+import time
 
+start_time = time.time()
 load_dotenv()
 
 class MyBot(commands.Bot):
@@ -55,5 +58,10 @@ async def hello(ctx: commands.Context):
 @bot.command()
 async def ping(ctx: commands.Context):
     await ctx.reply(f"🎾 Pong! API Latency: {round(bot.latency * 1000)}ms")
+
+@bot.command()
+async def uptime(ctx: commands.Context):
+    uptime = str(datetime.timedelta(seconds=int(round(time.time()-start_time))))
+    await ctx.reply(f"Uptime: {uptime}")
 
 bot.run(os.getenv("TOKEN"))
