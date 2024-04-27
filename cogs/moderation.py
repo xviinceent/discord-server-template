@@ -233,11 +233,11 @@ class NewCog(commands.Cog):
             return
         async for entry in message.guild.audit_logs(action=discord.AuditLogAction.message_delete, limit = 10):
             if entry.target == message.author:
-                embed = LoggingEmbed(responsible_user=entry.user, action="Message deleted", description=f"Message by {message.author} has been deleted.")
+                embed = LoggingEmbed(responsible_user=entry.user, action="Message deleted", description=f"Message by {message.author.mention} has been deleted.")
                 embed.add_field(name="Message Content", value=message.content if len(message.content) <= 1024 else message.content[:1018] + " [...]", inline=False)
                 await channel.send(embed=embed)
                 break
-        embed = LoggingEmbed(responsible_user=None, action="Message deleted", description=f"Message by {message.author} has been deleted.")
+        embed = LoggingEmbed(responsible_user=None, action="Message deleted", description=f"Message by {message.author.mention} has been deleted.")
         embed.add_field(name="Message Content", value=message.content if len(message.content) <= 1024 else message.content[:1018] + " [...]", inline=False)
         await channel.send(embed=embed)
         return
