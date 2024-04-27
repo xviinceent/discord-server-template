@@ -41,7 +41,8 @@ To make sure the bot is working, you need to rename the `example.config.json` fi
     "tempvoice_creation_channel_id": "The channel ID of the channel for the temporary voice channel creation (NOT IN QUOTATION MARKS)",
     "tempvoice_creation_category_id": "The category ID of the category for the created temporary voice channels (NOT IN QUOTATION MARKS)",
     "ticket_logging_channel_id": "The channel ID of the channel for ticket logging (NOT IN QUOTATION MARKS)",
-    "moderation_logging_channel_id": "The channel ID of the channel for moderation logs (NOT IN QUOTATION MARKS)"
+    "moderation_logging_channel_id": "The channel ID of the channel for moderation logs (NOT IN QUOTATION MARKS)",
+    "message_logging_channel_id": "The channel ID of the channel for moderation logs (NOT IN QUOTATION MARKS)"
 }
 ```
 
