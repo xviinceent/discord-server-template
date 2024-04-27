@@ -229,6 +229,25 @@ class NewCog(commands.Cog):
                 return
             return
         
+    @commands.Cog.listener()
+    async def on_message_delete(self, message: discord.Message):
+        print(message)
+        with open("config.json", "r") as f:
+            config = json.load(f)
+            message_logging_channel_id = config["message_logging_channel_id"]
+        channel = message.guild.get_channel(message_logging_channel_id)
+        if not channel:
+            return
+        async for entry in message.guild.audit_logs(action=discord.AuditLogAction.message_delete, limit = 10):
+            if entry.target == message.author:
+                embed = LoggingEmbed(responsible_user=entry.user, action="Message deleted", description=f"Message by {message.author} has been deleted.")
+                embed.add_field(name="Message Content", value=message.content if len(message.content) <= 1024 else message.content[:1018] + " [...]", inline=False)
+                await channel.send(embed=embed)
+                break
+        embed = LoggingEmbed(responsible_user=None, action="Message deleted", description=f"Message by {message.author} has been deleted.")
+        embed.add_field(name="Message Content", value=message.content if len(message.content) <= 1024 else message.content[:1018] + " [...]", inline=False)
+        await channel.send(embed=embed)
+        return
  
 async def setup(bot: commands.Bot):
     await bot.add_cog(NewCog(bot))

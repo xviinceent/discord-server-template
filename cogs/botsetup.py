@@ -36,6 +36,8 @@ class BotSetupView(discord.ui.View):
                 tempvoice_creation_channel_id = config["tempvoice_creation_channel_id"]
                 tempvoice_creation_category_id = config["tempvoice_creation_category_id"]
                 ticket_logging_channel_id = config["ticket_logging_channel_id"]
+                moderation_logging_channel_id = config["moderation_logging_channel_id"]
+                message_logging_channel_id = config["message_logging_channel_id"]
             except KeyError:
                 await interaction.response.send_message(f"❌ Setup failed. Please contact an admin.", ephemeral=True)
                 return
@@ -87,6 +89,16 @@ class BotSetupView(discord.ui.View):
         ticket_logging_channel = interaction.guild.get_channel(ticket_logging_channel_id)
         if not ticket_logging_channel:
             await interaction.response.send_message(f"❌ Setup failed. Please check if the channel with the ID `{ticket_logging_channel_id}` exists.", ephemeral=True)
+            return
+        
+        moderation_logging_channel = interaction.guild.get_channel(moderation_logging_channel_id)
+        if not moderation_logging_channel:
+            await interaction.response.send_message(f"❌ Setup failed. Please check if the channel with the ID `{moderation_logging_channel_id}` exists.", ephemeral=True)
+            return
+        
+        message_logging_channel = interaction.guild.get_channel(message_logging_channel_id)
+        if not message_logging_channel:
+            await interaction.response.send_message(f"❌ Setup failed. Please check if the channel with the ID `{message_logging_channel_id}` exists.", ephemeral=True)
             return
 
 
