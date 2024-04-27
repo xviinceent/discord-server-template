@@ -161,7 +161,6 @@ class NewCog(commands.Cog):
                 embed = LoggingEmbed(responsible_user=entry.user, action="User banned", description=f"User {user.mention} has been banned. Reason: {entry.reason}")
                 await channel.send(embed=embed)
                 break
-            return
         return
     
     @commands.Cog.listener()
@@ -177,7 +176,6 @@ class NewCog(commands.Cog):
                 embed = LoggingEmbed(responsible_user=entry.user, action="User unbanned", description=f"User {user.mention} has been unbanned.")
                 await channel.send(embed=embed)
                 break
-            return
         return
     
     @commands.Cog.listener()
@@ -197,7 +195,6 @@ class NewCog(commands.Cog):
                 embed = LoggingEmbed(responsible_user=entry.user, action="User kicked", description=f"User {member.mention} has been kicked. Reason: {entry.reason}")
                 await channel.send(embed=embed)
                 break
-            return
         return
     
     @commands.Cog.listener()
@@ -215,8 +212,6 @@ class NewCog(commands.Cog):
                         embed = LoggingEmbed(responsible_user=entry.user, action="User timeout revoked", description=f"{entry.target.mention}'s timeout has been revoked. Reason: {entry.reason}")
                         await channel.send(embed=embed)
                         break
-                    return
-                return
             return
         if not before.timed_out_until and after.timed_out_until:
             async for entry in after.guild.audit_logs(action=discord.AuditLogAction.member_update, limit = 10):
@@ -225,8 +220,6 @@ class NewCog(commands.Cog):
                         embed = LoggingEmbed(responsible_user=entry.user, action="User timed out", description=f"User {entry.target.mention} has been given a timeout until {discord.utils.format_dt(entry.target.timed_out_until, 'f')}. Reason: {entry.reason}")
                         await channel.send(embed=embed)
                         break
-                    return
-                return
             return
         
     @commands.Cog.listener()
