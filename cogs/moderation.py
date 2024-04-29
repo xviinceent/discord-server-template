@@ -224,7 +224,6 @@ class NewCog(commands.Cog):
         
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
-        print(message)
         with open("config.json", "r") as f:
             config = json.load(f)
             message_logging_channel_id = config["message_logging_channel_id"]
@@ -239,6 +238,20 @@ class NewCog(commands.Cog):
                 break
         embed = LoggingEmbed(responsible_user=None, action="Message deleted", description=f"Message by {message.author.mention} has been deleted.")
         embed.add_field(name="Message Content", value=message.content if len(message.content) <= 1024 else message.content[:1018] + " [...]", inline=False)
+        await channel.send(embed=embed)
+        return
+    
+    @commands.Cog.listener()
+    async def on_message_edit(self, before: discord.Message, after: discord.Message):
+        with open("config.json", "r") as f:
+            config = json.load(f)
+            message_logging_channel_id = config["message_logging_channel_id"]
+        channel = after.guild.get_channel(message_logging_channel_id)
+        if not channel:
+            return
+        embed = LoggingEmbed(responsible_user=before.author, action="Message edited", description=f"Message by {before.author.mention} has been edited.")
+        embed.add_field(name="Before", value=before.content if len(before.content) <= 1024 else before.content[:1018] + " [...]", inline=False)
+        embed.add_field(name="After", value=after.content if len(after.content) <= 1024 else after.content[:1018] + " [...]", inline=False)
         await channel.send(embed=embed)
         return
  
