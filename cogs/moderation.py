@@ -249,7 +249,7 @@ class NewCog(commands.Cog):
         channel = after.guild.get_channel(message_logging_channel_id)
         if not channel:
             return
-        embed = LoggingEmbed(responsible_user=before.author, action="Message edited", description=f"Message by {before.author.mention} has been edited.")
+        embed = LoggingEmbed(responsible_user=before.author, action="Message edited", description=f"[Message]({after.jump_url}) by {before.author.mention} has been edited.")
         embed.add_field(name="Before", value=before.content if len(before.content) <= 1024 else before.content[:1018] + " [...]", inline=False)
         embed.add_field(name="After", value=after.content if len(after.content) <= 1024 else after.content[:1018] + " [...]", inline=False)
         await channel.send(embed=embed)
