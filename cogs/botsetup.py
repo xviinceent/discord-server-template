@@ -124,12 +124,12 @@ class BotSetup(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
  
-    @app_commands.command(name="setup", description="Setup the bot.")
-    async def setup_bot(self, interaction: discord.Interaction):
-        if interaction.user != interaction.guild.owner:
-            await interaction.response.send_message("❌ Only the server owner can use this command.", ephemeral=True)
+    @commands.command(name="setup")
+    async def setup_bot(self, ctx: commands.Context):
+        if ctx.author != ctx.guild.owner:
+            await ctx.reply("❌ Only the server owner can use this command.")
             return
-        await interaction.response.send_message("Click the button below to start the setup.", view=BotSetupView())
+        await ctx.reply("Click the button below to start the setup.", view=BotSetupView())
  
 async def setup(bot: commands.Bot):
     with open("config.json", 'r') as f:

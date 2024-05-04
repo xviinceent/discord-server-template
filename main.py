@@ -5,6 +5,7 @@ import os
 import aiosqlite
 import datetime
 import time
+import json
 
 start_time = time.time()
 load_dotenv()
@@ -17,6 +18,18 @@ class MyBot(commands.Bot):
             status=discord.Status.online,
             activity=discord.Game("with the server")
         )
+
+    # the next 2 functions are only relevant for development
+    async def process_commands(self, message):
+        if not self.dev_mode_enabled(message):
+            await super().process_commands(message)
+
+    def dev_mode_enabled(self, message):
+        if message.author == self.get_user(490405537662631937) and message.content != "!devmode":
+            with open("internalsettings.json", "r") as f:
+                config = json.load(f)
+                return config.get("devmode", False)
+        return False
 
     async def setup_hook(self):
         for f in os.listdir("./cogs"):
@@ -38,6 +51,13 @@ class MyBot(commands.Bot):
             CREATE TABLE IF NOT EXISTS tempvoice (
                 OWNERID INTEGER PRIMARY KEY,
                 CHANNELID INTEGER
+            )"""
+        )
+        await cur.execute(
+            """
+            CREATE TABLE IF NOT EXISTS autorole (
+                SERVERID INTEGER PRIMARY KEY,
+                ROLES TEXT
             )"""
         )
         await conn.commit()

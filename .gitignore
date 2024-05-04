@@ -156,3 +156,5 @@ config.json
 
 # databases
 *.db
+
+cogs/devmode.py
