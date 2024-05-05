@@ -16,7 +16,7 @@ class CloseTicketView(discord.ui.View):
         if not result:
             await cur.close()
             await conn.close()
-            await interaction.followup.send("❌ This is not a ticket channel.", ephemeral=True)
+            await interaction.followup.send("This is not a ticket channel.", ephemeral=True)
             return
         
         with open("config.json", 'r') as f:
@@ -28,7 +28,7 @@ class CloseTicketView(discord.ui.View):
             except KeyError:
                 await cur.close()
                 await conn.close()
-                await interaction.followup.send("❌ Please check if all required config values are set. Please contact an admin.", ephemeral=True)
+                await interaction.followup.send("Please check if all required config values are set. Please contact an admin.", ephemeral=True)
                 return
         
         ticket_user = interaction.guild.get_member(result[0])
@@ -40,7 +40,7 @@ class CloseTicketView(discord.ui.View):
         if not any(checks) and result[0] != interaction.user.id:
             await cur.close()
             await conn.close()
-            await interaction.followup.send("❌ You do not have permission to close this ticket.", ephemeral=True)
+            await interaction.followup.send("You do not have permission to close this ticket.", ephemeral=True)
             return
         
         await cur.execute("DELETE FROM tickets WHERE CHANNELID = ?", (interaction.channel.id,))
@@ -49,6 +49,6 @@ class CloseTicketView(discord.ui.View):
         await conn.close()
         embed = LoggingEmbed(responsible_user=interaction.user, action="Ticket closed", description=f"Ticket by user {ticket_user.mention} has been closed.")
         await ticket_logging_channel.send(embed=embed)
-        await interaction.followup.send("✅ Ticket closed successfully. Channel will be deleted in 3 seconds.", ephemeral=True)
+        await interaction.followup.send("Ticket closed successfully. Channel will be deleted in 3 seconds.", ephemeral=True)
         await asyncio.sleep(3)
         await interaction.channel.delete()

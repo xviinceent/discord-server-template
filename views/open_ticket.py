@@ -17,7 +17,7 @@ class OpenTicketView(discord.ui.View):
         if result:
             await cur.close()
             await conn.close()
-            await interaction.followup.send(f"❌ You cannot create a new ticket since there already is an open one with the channel ID `{result[0]}`.", ephemeral=True)
+            await interaction.followup.send(f"You cannot create a new ticket since there already is an open one with the channel ID `{result[0]}`.", ephemeral=True)
             return
         with open("config.json", 'r') as f:
             config = json.load(f)
@@ -29,34 +29,34 @@ class OpenTicketView(discord.ui.View):
             except KeyError:
                 await cur.close()
                 await conn.close()
-                await interaction.followup.send(f"❌ Please check if all required config values are set. Please contact an admin.", ephemeral=True)
+                await interaction.followup.send(f"Please check if all required config values are set. Please contact an admin.", ephemeral=True)
                 return
 
         ticket_category = interaction.guild.get_channel(ticket_category_id)
         if not ticket_category:
             await cur.close()
             await conn.close()
-            await interaction.followup.send(f"❌ The ticket category does not exist. Please contact an admin.", ephemeral=True)
+            await interaction.followup.send(f"The ticket category does not exist. Please contact an admin.", ephemeral=True)
             return
         
         ticket_logging_channel = interaction.guild.get_channel(ticket_logging_channel_id)
         if not ticket_logging_channel:
             await cur.close()
             await conn.close()
-            await interaction.followup.send(f"❌ The ticket logging channel does not exist. Please contact an admin.", ephemeral=True)
+            await interaction.followup.send(f"The ticket logging channel does not exist. Please contact an admin.", ephemeral=True)
             return
 
         mod_role = interaction.guild.get_role(moderator_role_id)
         if not mod_role:
             await cur.close()
             await conn.close()
-            await interaction.followup.send(f"❌ The moderator role does not exist. Please contact an admin.", ephemeral=True)
+            await interaction.followup.send(f"The moderator role does not exist. Please contact an admin.", ephemeral=True)
             return
         admin_role = interaction.guild.get_role(admin_role_id)
         if not admin_role:
             await cur.close()
             await conn.close()
-            await interaction.followup.send(f"❌ The admin role does not exist. Please contact the server owner.", ephemeral=True)
+            await interaction.followup.send(f"The admin role does not exist. Please contact the server owner.", ephemeral=True)
             return
         ticket_channel = await ticket_category.create_text_channel(name=f"ticket-{interaction.user.id}", overwrites={interaction.guild.default_role: discord.PermissionOverwrite(view_channel=False), interaction.user: discord.PermissionOverwrite(view_channel=True), mod_role: discord.PermissionOverwrite(view_channel=True), admin_role: discord.PermissionOverwrite(view_channel=True)})
         await ticket_channel.send("This is the start of your ticket, please describe your issue. The ticket can be closed by using the </close:1219372148263620701> command.")
@@ -66,4 +66,4 @@ class OpenTicketView(discord.ui.View):
         await conn.commit()
         await cur.close()
         await conn.close()
-        await interaction.followup.send(f"✅ Ticket created: {ticket_channel.mention}.", ephemeral=True)
+        await interaction.followup.send(f"Ticket created: {ticket_channel.mention}.", ephemeral=True)

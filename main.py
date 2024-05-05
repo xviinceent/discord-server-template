@@ -53,13 +53,6 @@ class MyBot(commands.Bot):
                 CHANNELID INTEGER
             )"""
         )
-        await cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS autorole (
-                SERVERID INTEGER PRIMARY KEY,
-                ROLES TEXT
-            )"""
-        )
         await conn.commit()
         await cur.close()
         await conn.close()
