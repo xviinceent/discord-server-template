@@ -73,6 +73,18 @@ class Autorole(commands.Cog):
         for role_id in autorole_list:
             role = member.guild.get_role(role_id)
             await member.add_roles(role)
+
+    @autorole.command(name="all")
+    async def list_all(self, ctx: commands.Context):
+        with open("autoroles.json", "r") as f:
+            data = json.load(f)
+            autorole_list = data["list"]
+        text = ""
+        for role_id in autorole_list:
+            role = ctx.guild.get_role(role_id)
+            text += f"{role.mention}\n"
+        embed = discord.Embed(title="All Autoroles", description=text)
+        await ctx.reply(embed=embed)
  
 async def setup(bot: commands.Bot):
     await bot.add_cog(Autorole(bot))
