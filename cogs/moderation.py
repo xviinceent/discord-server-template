@@ -241,6 +241,8 @@ class Moderation(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message_edit(self, before: discord.Message, after: discord.Message):
+        if before.content == after.content or len(before.content) <= 0:
+            return
         with open("config.json", "r") as f:
             config = json.load(f)
             message_logging_channel_id = config["message_logging_channel_id"]
